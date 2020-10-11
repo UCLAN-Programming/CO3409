@@ -1,78 +1,118 @@
-# CO3409 Distributed Enterprise Systems 
-
-# Persistence Using a Database and JSFs 
+# CO3409 Distributed Enterprise Systems Introduction to Java Server Faces (JSFs) 
 
 
 
 ## Summary
 
-This exercise looks at an interface between a JSF frontend and a database. However, the most important parts of the exercise are the use of the IDE to create and populate a database, to generate a class corresponding to a record from the database, and the use of the Java Persistence API to read and write records from Java.
+JavaServer Faces (JSF) is a user interface (UI) framework for Java web applications. It is designed to significantly ease the burden of writing and maintaining applications that run on a Java application server and render their UIs back to a target client. JSFs is based on the Model, View, Controller (MVC) architecture, which is a well-known way of structuring an application to separate the user interface from the processing. JSF is part of Java Enterprise Edition. 
+
+This exercise introduces the JSFs and ideas that will occur later in the module such as bean, framework, annotation, convention over configuration.
 
 ## Purpose
 
 On completion of this you should be able to
 
-1. Use NetBeans to create a database web application
-2. Create a simple class from a database using an     object-relational mapping
-3. Create and view a database using the NetBeans IDE
-4. Load and save entities programmatically
+1. Use NetBeans to create a JSF-based application.
+2. Explain the meaning of MVC architecture, managed     bean, navigation, annotation, configuration, DRY, convention over configuration, framework, facelet, template.
+3. Outline the operation of JSF applications.
+4. Outline some advantages & disadvantages of JSF.
+
+## Introduction to JSF
+
+A JSF page is represented by a tree of UI components, called a view. When a client makes a request for the page, the life cycle starts. The JSF implementation must build the view using state saved from a previous submission of the page. A request is processed through the following stages: (see https://docs.oracle.com/javaee/7/tutorial/jsf-intro006.htm#BNAQQ)
+
+1. Construct a tree representing the components in the view. This will contain the previous state of the components.
+2. Apply any parameters provided in the current request – i.e. update the state of any components.
+3. Validate the new values.
+4. Update the underlying model with the (validated)  values from the user interface
+5. Carry out any final processing.
+6. Render the display based on the results.
+
+After various stages, any event handlers that have been attached to the components are triggered.
 
 ## Activities
 
-This tutorial consists of 4 parts. 
+You are going to do a Netbeans tutorial, which is one way that practising programmers learn relevant concepts and techniques. There are questions at the end to allow you to check if you have understood. To answer them, you may have to search for information for yourself as well as use the links I provide.
 
-## 1. Creating a Database using the NetBeans IDE
+**HERE BE DRAGONS!** 
+Don't ignore the notes section – read it along while you’re working on the tutorial so that you will recognise where in the tutorial you need to refer back to it.
 
-Creating a Database using Netbeans is straightforward. Follow the instructions below. 
+## 1. First JSF-based Web Application
 
-1. Run NetBeans. 
-   
+Carry out the NetBeans tutorial at http://netbeans.org/kb/docs/web/jsf20-intro.html. 
 
-2. Switch to the Services Pane. 
-
-   
-
-3. Expand the Databases branch. 
-
-   
-
-4. Right-click on the JavaDB leaf. 
-
-   
-
-5. Select Create Database.
-
-   
-
-6. Enter the database name `consult`, and a user `APP` and a password. Make sure that the password you choose is something you can remember! This way you shouldn't forget what it is. If you don't want that kind of responsibility, use `uclan2020`.
-
-   **Note:** *Make sure you use the username `APP`, which is the default database schema. You will have problems if you use another name, because this is used as the schema name. If you get the name wrong, you can create a schema later*.
-
-   
-
-7. Make a note of the name of the Database Location, the folder where you are storing the database (e.g., C:\documents and settings\dgcampbell\.netbeans-derby\consult). [If the IDE complains that the database already exists, navigate to the folder using Windows explorer and delete the consult folder.]. When you click OK, a separate database server application will be started and will create the database for you.
-
-   
-
-8. When the database has been created, a connection node will appear in the Databases branch.
-
-   
-
-9. Right-click on the JavaDB leaf and stop the Server.
+You can download `jsfDemo` project from Blackboard or from the tutorial page. Pay close attention to the following notes. They are extremely useful (you have been warned!).
 
 
+**Note :** **Adding JSF 2.0 Support to a Web Application**
 
-### Aside: Using an Embedded Database or a Separate Server
+1. (Step 3 & 4) The tutorial uses `xhtm`l files and asks you to display them in the browser. Old versions of Internet Explorer won't display `xhtml`, but simply asked if you wanted to download them.     Apparently, it refused to recognise the mime type (content type) that the Server attaches to them. If you downloaded them and rename them `.html`, it would display them correctly.
+2. (Step 8)  JSF is implemented by a servlet cunningly called the Faces Servlet. This takes the client request and any session information and takes it through the JSF request lifecycle. The servlet URL pattern is used by the server (Glassfish) to decide whether to pass the HTTP request from the client to the Faces servlet.
+3. (Step 9) The deployment descriptor is used to pass information to the server, when the web application is *deployed*. You can view the `web.xml` deployment descriptor by double-clicking on it. When it is open in the editor pane, you can look at  the raw XML or you can look at it in a structured way, by clicking on     appropriate tabs and <u>answer the following questions</u>:.
+4. ​				**a)** In which section is the servlet pattern stored?
 
-The Derby DBMS can be used as a standalone server or as a library of routines embedded in the application. On a single machine, the embedded server should be slightly less resource hungry. To convert from one to the other, it is a matter of altering the reference to the database folder: it is a URL for the server and a disk path for the embedded library. To access the server, a client library is needed (`derbyclient.jar`); the library for the embedded database is in `derby.jar`. You could change this using the libraries folder in the Projects Tab. 
+1. ​				**b)** What is the purpose of the welcome-file-list section?
+
+**Note : Creating a Managed Bean**
+
+1. A POJO conforms to the JavaBeans naming convention – essentially properties are only accessed through getters and setters, where the name of the getter and setter for a property `XXX` is `getXXX()` or     `setXXX()`. Getters for Boolean properties can be called `isXXX()`. If a bean can generate an event, `YYY`, it will allow other beans to register to be notified when the event occurs using a method called `addYYYListener`. There should also be a method called `removeYYYListener`.
+
+2. (Step 2) Don't forget to enter both the Name and     the Class Name of the managed bean. The Name is really the name of the     instance of the class that will be created by the server and used by the     application.
+
+3. Annotations are a new feature of Java and C#. Essentially, they are machine-processable extensions to the language. They are objects and are stored with the compiled code. They are used to affect  the way an item is processed by the compiler or the run-time system rather  than to change the item itself. Information for the server can be stored  in annotations instead of in a separate configuration file, which often uses XML. This can reduce the duplication of information (following the **DRY principle** – Don't Repeat Yourself). 
+
+   In this tutorial, the usage  of the annotaion `@ManagedBean` is being phased out. Therefore, you’ll notice in your created bean in NetBeans that the annotation `@Named(value = "UserNumberBean")`   is used instead. The main difference is that `@Named` beans are visible to the whole JEE container, while `@ManagedBean` are visible only to the JSF container. 
+
+**Note : Wiring Managed Beans to Pages : `index.xhtml`**
+
+1. Expression language (EL) is part of JSF. Expressions can access Java Beans (e.g. `#{UserNumberBean.userNumber}` is evaluated by the server.)
+2. Replace the opening and closing head tags in both `index.xhtm`l and `response.xhtm`l with` <h:head> … </h:head>` otherwise you will get an error message displayed on the pages: One or more resources have the target of `head`, but no `head` component has been defined within the view.
+
+## 2. An Alternative Implementation using JSP
+
+Right-click on the Web Pages folder in the Project pane and create a new JSP file called `simple.jsp` (don't add .jsp – **why?**).
+
+Replace the contents of `simple.jsp` with: 
+
+```html
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Number Guessing Game in JSP</title>
+    </head>
+    <body>
+        <p><jsp:useBean id="userNumberBean" scope="session" class="guessNumber.UserNumberBean" /></p>
+        <h1>Guessing Game</h1>
+        Debugging – theGuess parameter was: <%=request.getParameter("theGuess")%>
+        <%
+          int theVal;
+          try {
+              theVal = Integer.parseInt(request.getParameter("theGuess"));
+          }
+          catch (Exception ex){
+              theVal = 0;
+              }
+          userNumberBean.setUserNumber(theVal);
+          
+        %>
+        <p>Your number was <%=userNumberBean.getUserNumber()%></p>
+        <p><%=userNumberBean.getResponse()%></p>
+        <form name="jspform" action="simple.jsp">
+            <input type="text" name="theGuess" value="<%=userNumberBean.getUserNumber()%>" /><br/>
+            <input type="submit"/>
+        </form>
+    </body>
+</html>
+```
 
 
+Try it out **and explain how it works**. Notice that it is using the same bean, which writes its "hidden" random number to the server output page.
 
-
-
-
-
-**![image-20201011133644941](/Users/dan/Library/Application Support/typora-user-images/image-20201011133644941.png)However, if you are using the embedded database in your application, you can't simultaneously access it from NetBeans, so we will stick with the default, a separate database server.**
+Make sure that you explore what happens after the number has been guessed correctly and fix the program. **Evaluate your fix** – does it raise any long-term issues – is the bean too tightly coupled to the Faces approach to be useful with JSP?  Would it make the application better if you added a `bool check()` method and a` void reset()` method to the bean?
 
 ## 3. Answer the following questions
 
