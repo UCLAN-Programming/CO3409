@@ -8,6 +8,8 @@
 
 This exercise looks at an interface between a JSF frontend and a database. However, the most important parts of the exercise are the use of the IDE to create and populate a database, to generate a class corresponding to a record from the database, and the use of the Java Persistence API to read and write records from Java.
 
+
+
 ## Purpose
 
 On completion of this you should be able to
@@ -16,6 +18,8 @@ On completion of this you should be able to
 2. Create a simple class from a database using an     object-relational mapping
 3. Create and view a database using the NetBeans IDE
 4. Load and save entities programmatically
+
+
 
 ## Activities
 
@@ -70,7 +74,7 @@ The Derby DBMS can be used as a standalone server or as a library of routines em
 
 
 
-**!<img src="/Users/dan/Library/Application Support/typora-user-images/image-20201011133644941.png" alt="image-20201011133644941" style="zoom:45%;" />**
+**<img src="/Users/dan/Library/Application Support/typora-user-images/image-20201011133644941.png" alt="image-20201011133644941" style="zoom:45%;" />**
 
 
 
@@ -144,8 +148,6 @@ You will need to scroll to the end of the drop-down list box to find the **New D
 
 
 ------
-
-
 
 ## Appendix 1
 
@@ -251,13 +253,7 @@ ALTER TABLE billable ADD CONSTRAINT billable_fk_project FOREIGN KEY ( client_nam
 
 ```
 
-
-
-
-
 ------
-
-
 
 ## Appendix 2
 
