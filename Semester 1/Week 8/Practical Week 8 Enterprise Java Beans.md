@@ -854,7 +854,7 @@ Read the following resources surrounding EJB and its features.
 
 - **Interceptors** 
 
-  - https://abhirockzz.wordpress.com/2015/01/03/java-ee-interceptors/http://webdev.jhuep.com/~jcs/ejava-javaee/coursedocs/content/html_single/javaee-interceptors-book.html     
+  - https://webdev.jhuep.com/~jcs/ejava-javaee/coursedocs/content/html_single/javaee-interceptors-book.html    
 
 
 
